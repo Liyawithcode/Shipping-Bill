@@ -6,8 +6,10 @@ import { defineConfig } from 'vite'
 
 export const isProduction = process.env.NODE_ENV === 'production'
 
-// Set entry point for index.html, from arguments passed
-process.env.PUBLIC_ENTRY_POINT = process.argv[process.argv.length - 1]
+// Set entry point for index.html, defaulting to /src/index.tsx
+const lastArg = process.argv[process.argv.length - 1]
+const isFileArg = lastArg && (lastArg.endsWith('.tsx') || lastArg.endsWith('.jsx') || lastArg.endsWith('.ts') || lastArg.endsWith('.js'))
+process.env.PUBLIC_ENTRY_POINT = isFileArg ? (lastArg.startsWith('/') ? lastArg : `/${lastArg}`) : '/src/index.tsx'
 
 const packageAlias = [
   { find: '@', replacement: fileURLToPath(new URL(`src/`, import.meta.url)) },
