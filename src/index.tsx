@@ -6,10 +6,21 @@ import { initRouter } from 'core/routing'
 import { Router } from 'core/routing/route-utils'
 import { routeToReactElement } from 'core/routing/render-route'
 import { ToastManager } from 'core/toast-manager-component'
-import { SmallScreenWarning } from 'ui/notify/small-screen-warning'
 import 'ui/styles.css'
 import { onError, onRequest, onResponse } from './shared/interceptors'
 import { routeObjects } from './shared/routes'
+
+// Enforce pure light mode only
+if (typeof document !== 'undefined') {
+  document.documentElement.classList.remove('dark')
+  document.documentElement.classList.add('light')
+  document.documentElement.style.colorScheme = 'light'
+  try {
+    localStorage.setItem('z-dark', 'false')
+  } catch {
+    // Ignore storage issues
+  }
+}
 
 addInterceptors({ onRequest, onResponse, onError })
 initRouter(routeObjects)
@@ -22,7 +33,6 @@ export function App() {
       {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {import.meta.env.DEV && ReactQueryDevtools && <ReactQueryDevtools initialIsOpen={true} client={queryClient} />}
       <ConfirmDeleteDialog />
-      <SmallScreenWarning />
     </QueryClientProvider>
   )
 }

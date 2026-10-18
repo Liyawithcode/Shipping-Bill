@@ -16,7 +16,7 @@ const packageAlias = [
   { find: 'ui', replacement: fileURLToPath(new URL(`fe-zen-arch/ui/`, import.meta.url)) }
 ]
 
-const port = parseInt(process.argv[process.argv.length - 2])
+const port = parseInt(process.argv[process.argv.length - 2]) || 5173
 
 /** @type {import('vite').UserConfig} */
 const config = {
